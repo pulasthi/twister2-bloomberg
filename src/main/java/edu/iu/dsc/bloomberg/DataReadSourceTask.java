@@ -53,7 +53,7 @@ public class DataReadSourceTask extends BaseSource {
                     LOG.info(".");
                 }
             }
-
+            LOG.info("Done readning " + context.getWorkerId());
             context.write(this.edge, 2.3);
             bf.close();
         }catch (IOException e){
