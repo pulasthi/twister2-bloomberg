@@ -32,6 +32,7 @@ public class DataReadSourceTask extends BaseSource {
             BufferedReader bf = new BufferedReader(new FileReader(filePath));
             String line = null;
             String splits[];
+            LOG.info("Worker " + context.getWorkerId() + " Task " + context.taskIndex());
             LOG.info("Starting to read file " + context.getWorkerId());
             while (count < 40000000 && (line = bf.readLine()) != null) {
                 splits = line.split("\\s+");
@@ -53,6 +54,8 @@ public class DataReadSourceTask extends BaseSource {
                 }
             }
 
+            context.write(this.edge, 2.3);
+            bf.close();
         }catch (IOException e){
             e.printStackTrace();
         }

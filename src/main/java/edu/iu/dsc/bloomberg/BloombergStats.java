@@ -36,9 +36,11 @@ public class BloombergStats extends TaskWorker {
 
     protected static class SinkTask extends BaseSink {
         private static final long serialVersionUID = -254264903510284798L;
+        private static final Logger LOG = Logger.getLogger(SinkTask.class.getName());
 
         public boolean execute(IMessage message) {
-            return false;
+            LOG.info("Got to Sink");
+            return true;
         }
     }
 }
