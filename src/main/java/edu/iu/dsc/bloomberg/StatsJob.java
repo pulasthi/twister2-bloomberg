@@ -41,7 +41,7 @@ public class StatsJob {
 
         Config config = ResourceAllocator.loadConfig(new HashMap<>());
         Twister2Job.Twister2JobBuilder jobBuilder = Twister2Job.newBuilder();
-        jobBuilder.setJobName("KMeans-job");
+        jobBuilder.setJobName("Bloombreg-stats");
         jobBuilder.setWorkerClass(BloombergStats.class.getName());
         jobBuilder.addComputeResource(2, 8096, 4.0, 192);
         jobBuilder.setConfig(jobConfig);

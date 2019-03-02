@@ -11,8 +11,12 @@ import edu.iu.dsc.tws.task.api.BaseSource;
 import edu.iu.dsc.tws.task.api.IMessage;
 import edu.iu.dsc.tws.task.graph.DataFlowTaskGraph;
 
-public class BloombergStats extends TaskWorker {
+import java.util.logging.Logger;
 
+public class BloombergStats extends TaskWorker {
+    private static final Logger LOG = Logger.getLogger(BloombergStats.class.getName());
+
+    @Override
     public void execute() {
         int parallism = 192;
         String filePath = config.getStringValue("input");
@@ -30,7 +34,7 @@ public class BloombergStats extends TaskWorker {
         taskExecutor.execute(dataFlowTaskGraph, executionPlan);
     }
 
-    protected class SinkTask extends BaseSink {
+    protected static class SinkTask extends BaseSink {
         private static final long serialVersionUID = -254264903510284798L;
 
         public boolean execute(IMessage message) {
