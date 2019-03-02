@@ -10,6 +10,7 @@ import edu.iu.dsc.tws.task.api.BaseSink;
 import edu.iu.dsc.tws.task.api.BaseSource;
 import edu.iu.dsc.tws.task.api.IMessage;
 import edu.iu.dsc.tws.task.graph.DataFlowTaskGraph;
+import edu.iu.dsc.tws.task.graph.OperationMode;
 
 import java.util.logging.Logger;
 
@@ -28,6 +29,7 @@ public class BloombergStats extends TaskWorker {
         taskGraphBuilder.addSource("source", readSource, parallism);
         ComputeConnection computeConnection = taskGraphBuilder.addSink("sink", resultSink, 1);
         computeConnection.reduce("source", "edge", Op.SUM, DataType.DOUBLE);
+        taskGraphBuilder.setMode(OperationMode.BATCH);
 
         DataFlowTaskGraph dataFlowTaskGraph = taskGraphBuilder.build();
         ExecutionPlan executionPlan = taskExecutor.plan(dataFlowTaskGraph);
