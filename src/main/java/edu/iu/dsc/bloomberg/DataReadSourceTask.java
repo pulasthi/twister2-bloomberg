@@ -5,18 +5,23 @@ import edu.iu.dsc.tws.task.api.BaseSource;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.logging.Logger;
 
 public class DataReadSourceTask extends BaseSource {
+    private static final Logger LOG = Logger.getLogger(DataReadSourceTask.class.getName());
+
     private String edge;
     private String inputDir;
     private String filePrefirx = "part_";
     private double sum;
     private double count;
+
     public DataReadSourceTask(String edge, String inputDir) {
         this.edge = edge;
         this.inputDir = inputDir;
     }
 
+    @Override
     public void execute() {
         try {
             int currentMax = -1;
@@ -27,7 +32,7 @@ public class DataReadSourceTask extends BaseSource {
             BufferedReader bf = new BufferedReader(new FileReader(filePath));
             String line = null;
             String splits[];
-
+            LOG.info("Starting to read file " + context.getWorkerId());
             while (count < 40000000 && (line = bf.readLine()) != null) {
                 splits = line.split("\\s+");
                 int row = Integer.valueOf(splits[0]);
@@ -43,6 +48,9 @@ public class DataReadSourceTask extends BaseSource {
                     throw new IllegalStateException("File : " + fileId + " not in order at line : " + count);
                 }
                 currentMax = row;
+                if(context.getWorkerId() == 0 && count % 2000000 == 0){
+                    LOG.info(".");
+                }
             }
 
         }catch (IOException e){
