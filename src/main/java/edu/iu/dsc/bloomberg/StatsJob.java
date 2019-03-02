@@ -21,6 +21,7 @@ public class StatsJob {
     public static void main(String[] args) {
         Options options = new Options();
         options.addOption("input", true, "Input directory");
+        options.addOption("output", true, "Output directory");
         CommandLineParser commandLineParser = new DefaultParser();
         CommandLine cmd;
         try {
@@ -35,6 +36,8 @@ public class StatsJob {
 
         JobConfig jobConfig = new JobConfig();
         jobConfig.put("input", cmd.getOptionValue("input"));
+        jobConfig.put("output", cmd.getOptionValue("output"));
+
 
         Config config = ResourceAllocator.loadConfig(new HashMap<>());
         Twister2Job.Twister2JobBuilder jobBuilder = Twister2Job.newBuilder();

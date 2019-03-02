@@ -15,8 +15,8 @@ public class BloombergStats extends TaskWorker {
 
     public void execute() {
         int parallism = 192;
-        String filePath = "/share/project2/FG546/pulasthi/bloomberg";
-        String outFilePath = "/share/project2/FG546/pulasthi/bloomberg/toutput";
+        String filePath = config.getStringValue("input");
+        String outFilePath = config.getStringValue("output");
 
         BaseSource readSource = new DataReadSourceTask("edge",filePath);
         BaseSink resultSink = new SinkTask();
