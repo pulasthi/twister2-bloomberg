@@ -1,4 +1,4 @@
-package edu.iu.dsc.bloomberg;
+package edu.iu.dsc.bloomberg.sparse;
 
 import edu.iu.dsc.tws.task.api.BaseSource;
 
