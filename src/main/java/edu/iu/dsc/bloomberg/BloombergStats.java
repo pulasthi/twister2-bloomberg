@@ -26,10 +26,10 @@ public class BloombergStats extends TaskWorker {
         BaseSource readSource = new DataReadSourceTask("edge",filePath);
         BaseSink resultSink = new SinkTask();
         TaskGraphBuilder taskGraphBuilder = TaskGraphBuilder.newBuilder(config);
+        taskGraphBuilder.setMode(OperationMode.BATCH);
         taskGraphBuilder.addSource("source", readSource, parallism);
         ComputeConnection computeConnection = taskGraphBuilder.addSink("sink", resultSink, 1);
         computeConnection.reduce("source", "edge", Op.SUM, DataType.DOUBLE);
-        taskGraphBuilder.setMode(OperationMode.BATCH);
 
         DataFlowTaskGraph dataFlowTaskGraph = taskGraphBuilder.build();
         ExecutionPlan executionPlan = taskExecutor.plan(dataFlowTaskGraph);
@@ -41,7 +41,7 @@ public class BloombergStats extends TaskWorker {
         private static final Logger LOG = Logger.getLogger(SinkTask.class.getName());
 
         public boolean execute(IMessage message) {
-            LOG.info("Got to Sink");
+            LOG.info("Sum : " + message.getContent().toString());
             return true;
         }
     }

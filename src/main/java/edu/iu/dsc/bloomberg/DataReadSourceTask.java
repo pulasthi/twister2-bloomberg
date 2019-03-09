@@ -54,7 +54,7 @@ public class DataReadSourceTask extends BaseSource {
                 }
             }
             LOG.info("Done readning " + context.getWorkerId());
-            double [] res = {2.3};
+            double [] res = {sum};
             context.write(this.edge, res);
             bf.close();
             context.end(this.edge);
