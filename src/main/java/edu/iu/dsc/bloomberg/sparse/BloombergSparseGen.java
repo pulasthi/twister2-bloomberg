@@ -29,7 +29,7 @@ public class BloombergSparseGen extends TaskWorker {
         taskGraphBuilder.addSource("source", readSource, parallism);
         ComputeConnection computeConnection = taskGraphBuilder.addSink("sink", baseSink, parallism);
         computeConnection.reduce("source", "edge", Op.SUM, DataType.DOUBLE);
-        computeConnection.keyedPartition("source", "edge", DataType.INTEGER, DataType.);
+        computeConnection.keyedPartition("source", "edge", DataType.INTEGER, DataType.INTEGER);
 
         taskGraphBuilder.setMode(OperationMode.BATCH);
 
