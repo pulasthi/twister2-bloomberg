@@ -34,7 +34,7 @@ public class DataReadSourceTask extends BaseSource {
             String splits[];
             LOG.info("Worker " + context.getWorkerId() + " Task " + context.taskIndex());
             LOG.info("Starting to read file " + context.getWorkerId());
-            while (count < 40000000 && (line = bf.readLine()) != null) {
+            while ((line = bf.readLine()) != null) {
                 splits = line.split("\\s+");
                 int row = Integer.valueOf(splits[0]);
                 int col = Integer.valueOf(splits[1]);
@@ -54,7 +54,7 @@ public class DataReadSourceTask extends BaseSource {
                 }
             }
             LOG.info("Done readning " + context.getWorkerId());
-            double [] res = {sum};
+            double [] res = {sum, count};
             context.write(this.edge, res);
             bf.close();
             context.end(this.edge);

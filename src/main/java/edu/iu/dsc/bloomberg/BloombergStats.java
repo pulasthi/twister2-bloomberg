@@ -41,7 +41,9 @@ public class BloombergStats extends TaskWorker {
         private static final Logger LOG = Logger.getLogger(SinkTask.class.getName());
 
         public boolean execute(IMessage message) {
-            LOG.info("Sum : " + ((double[])message.getContent())[0]);
+            double[] data = (double[])message.getContent();
+            double mean = data[0]/data[1];
+            LOG.info("Mean : " + mean);
             return true;
         }
     }
