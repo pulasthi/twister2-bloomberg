@@ -24,12 +24,11 @@ public class BloombergSparseGen extends TaskWorker {
         double min = 0.61600;
         double max = 14950.00;
         BaseSource readSource = new SparseGenSourceTask("edge",filePath, min, max);
-        BaseSink baseSink = new SparseGenSinkTask();
+        SparseGenSinkTask baseSink = new SparseGenSinkTask();
         TaskGraphBuilder taskGraphBuilder = TaskGraphBuilder.newBuilder(config);
         taskGraphBuilder.addSource("source", readSource, parallism);
         ComputeConnection computeConnection = taskGraphBuilder.addSink("sink", baseSink, parallism);
         computeConnection.keyedPartition("source", "edge", DataType.INTEGER, DataType.INTEGER);
-
         taskGraphBuilder.setMode(OperationMode.BATCH);
 
         DataFlowTaskGraph dataFlowTaskGraph = taskGraphBuilder.build();
