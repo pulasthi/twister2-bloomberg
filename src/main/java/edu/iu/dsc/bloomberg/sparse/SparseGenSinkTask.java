@@ -1,5 +1,6 @@
 package edu.iu.dsc.bloomberg.sparse;
 
+import com.google.common.collect.Iterators;
 import edu.iu.dsc.tws.comms.dfw.io.Tuple;
 import edu.iu.dsc.tws.task.api.BaseSink;
 import edu.iu.dsc.tws.task.api.IMessage;
@@ -15,8 +16,9 @@ public class SparseGenSinkTask extends BPartitionKeyedCompute<Integer, int[]>
 
     @Override
     public boolean keyedPartition(Iterator<Tuple<Integer, int[]>> content) {
-        LOG.info(String.format("%d received keyed-partition %d",
-                context.getWorkerId(), context.taskId()));
+        int count = Iterators.size(content);
+        LOG.info(String.format("%d received keyed-partition count : %d",
+                context.taskId(), count));
         return true;
     }
 }

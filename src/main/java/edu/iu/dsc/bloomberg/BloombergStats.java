@@ -23,7 +23,7 @@ public class BloombergStats extends TaskWorker {
         String filePath = config.getStringValue("input");
         String outFilePath = config.getStringValue("output");
 
-        BaseSource readSource = new DataReadSourceTask("edge",filePath);
+        BaseSource readSource = new DataReadSourceTask("edge", filePath);
         BaseSink resultSink = new SinkTask();
         TaskGraphBuilder taskGraphBuilder = TaskGraphBuilder.newBuilder(config);
         taskGraphBuilder.setMode(OperationMode.BATCH);
@@ -41,9 +41,9 @@ public class BloombergStats extends TaskWorker {
         private static final Logger LOG = Logger.getLogger(SinkTask.class.getName());
 
         public boolean execute(IMessage message) {
-            double[] data = (double[])message.getContent();
-            double mean = data[0]/data[1];
-            LOG.info("Mean : " + mean);
+            double[] data = (double[]) message.getContent();
+            double mean = data[0] / data[1];
+            LOG.info("Total Count: " + data[1] + " Mean : " + mean);
             return true;
         }
     }
