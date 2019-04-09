@@ -50,8 +50,8 @@ public class SparseGenSourceTask extends BaseSource {
                 score = Double.valueOf(splits[2]);
                 dist = (1 / score - 1 / max) * min * max / (max - min);
                 sdist = (int) (dist * Integer.MAX_VALUE);
-                if (context.getWorkerId() == 0 && (count % 2000000 == 0)) {
-                    System.out.print(".");
+                if (context.getWorkerId() == 0 && count % 2000000 == 0) {
+                    LOG.info(".");
                 }
                 if (row > col) {
                     key = col;
