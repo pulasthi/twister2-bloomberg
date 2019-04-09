@@ -38,7 +38,7 @@ public class SparseGenSourceTask extends BaseSource {
             String splits[];
             LOG.info("Worker " + context.getWorkerId() + " Task " + context.taskIndex());
             LOG.info("Starting to read file " + context.getWorkerId());
-            while (count < 10000000 && (line = bf.readLine()) != null) {
+            while ((line = bf.readLine()) != null) {
                 count++;
                 splits = line.split("\\s+");
                 int row = Integer.valueOf(splits[0]);
