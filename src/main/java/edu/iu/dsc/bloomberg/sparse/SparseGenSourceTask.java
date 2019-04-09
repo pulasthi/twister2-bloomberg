@@ -48,6 +48,9 @@ public class SparseGenSourceTask extends BaseSource {
                 int sdist = (int) (dist * Integer.MAX_VALUE);
                 Integer key;
                 int[] vals;
+                if (context.getWorkerId() == 0 && (count % 20000000 == 0)) {
+                    System.out.print(".");
+                }
                 if (row > col) {
                     key = col;
                     vals = new int[]{row, sdist};
