@@ -16,7 +16,11 @@ public class SparseGenSinkTask extends BPartitionKeyedCompute<Integer, int[]>
 
     @Override
     public boolean keyedPartition(Iterator<Tuple<Integer, int[]>> content) {
-        int count = Iterators.size(content);
+        long count = 0;
+        while (content.hasNext()) {
+            content.next();
+            count++;
+        }
         LOG.info(String.format("%d received keyed-partition count : %d",
                 context.taskId(), count));
         return true;
