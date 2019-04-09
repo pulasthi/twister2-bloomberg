@@ -43,7 +43,7 @@ public class StatsJob {
         Twister2Job.Twister2JobBuilder jobBuilder = Twister2Job.newBuilder();
         jobBuilder.setJobName("Bloombreg-stats");
         jobBuilder.setWorkerClass(BloombergStats.class.getName());
-        jobBuilder.addComputeResource(3, 8096, 4.0, 192);
+        jobBuilder.addComputeResource(3, 4096, 4.0, 192);
         jobBuilder.setConfig(jobConfig);
 
         // now submit the job
