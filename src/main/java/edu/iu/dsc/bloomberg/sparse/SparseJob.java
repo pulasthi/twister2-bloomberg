@@ -44,7 +44,7 @@ public class SparseJob {
         Twister2Job.Twister2JobBuilder jobBuilder = Twister2Job.newBuilder();
         jobBuilder.setJobName("Bloombreg-sparseGen");
         jobBuilder.setWorkerClass(BloombergSparseGen.class.getName());
-        jobBuilder.addComputeResource(3, 8096, 4.0, 192);
+        jobBuilder.addComputeResource(3, 15360, 4.0, 192);
         jobBuilder.setConfig(jobConfig);
 
         // now submit the job

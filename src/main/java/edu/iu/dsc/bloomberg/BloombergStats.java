@@ -22,6 +22,7 @@ public class BloombergStats extends TaskWorker {
         int parallism = 192;
         String filePath = config.getStringValue("input");
         String outFilePath = config.getStringValue("output");
+        long startTime = System.currentTimeMillis();
 
         BaseSource readSource = new DataReadSourceTask("edge", filePath);
         BaseSink resultSink = new SinkTask();
@@ -34,6 +35,8 @@ public class BloombergStats extends TaskWorker {
         DataFlowTaskGraph dataFlowTaskGraph = taskGraphBuilder.build();
         ExecutionPlan executionPlan = taskExecutor.plan(dataFlowTaskGraph);
         taskExecutor.execute(dataFlowTaskGraph, executionPlan);
+        LOG.info("Total time taken : " + (System.currentTimeMillis() - startTime));
+
     }
 
     protected static class SinkTask extends BaseSink {

@@ -38,25 +38,29 @@ public class SparseGenSourceTask extends BaseSource {
             String splits[];
             LOG.info("Worker " + context.getWorkerId() + " Task " + context.taskIndex());
             LOG.info("Starting to read file " + context.getWorkerId());
+            int[] vals = new int[2];
+            int row, col, sdist;
+            double score, dist;
+            Integer key;
             while ((line = bf.readLine()) != null) {
                 count++;
                 splits = line.split("\\s+");
-                int row = Integer.valueOf(splits[0]);
-                int col = Integer.valueOf(splits[1]);
-                double score = Double.valueOf(splits[2]);
-                double dist = (1 / score - 1 / max) * min * max / (max - min);
-                int sdist = (int) (dist * Integer.MAX_VALUE);
-                Integer key;
-                int[] vals;
-                if (context.getWorkerId() == 0 && (count % 20000000 == 0)) {
+                row = Integer.valueOf(splits[0]);
+                col = Integer.valueOf(splits[1]);
+                score = Double.valueOf(splits[2]);
+                dist = (1 / score - 1 / max) * min * max / (max - min);
+                sdist = (int) (dist * Integer.MAX_VALUE);
+                if (context.getWorkerId() == 0 && (count % 2000000 == 0)) {
                     System.out.print(".");
                 }
                 if (row > col) {
                     key = col;
-                    vals = new int[]{row, sdist};
+                    vals[0] = row;
+                    vals[1] = sdist;
                 } else {
                     key = row;
-                    vals = new int[]{col, sdist};
+                    vals[0] = col;
+                    vals[1] = sdist;
                 }
                 context.write(this.edge, key, vals);
             }
