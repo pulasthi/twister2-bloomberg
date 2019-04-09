@@ -11,6 +11,7 @@ import edu.iu.dsc.tws.task.api.BaseSource;
 import edu.iu.dsc.tws.task.graph.DataFlowTaskGraph;
 import edu.iu.dsc.tws.task.graph.OperationMode;
 
+import java.util.Comparator;
 import java.util.logging.Logger;
 
 public class BloombergSparseGen extends TaskWorker {
@@ -29,7 +30,8 @@ public class BloombergSparseGen extends TaskWorker {
         TaskGraphBuilder taskGraphBuilder = TaskGraphBuilder.newBuilder(config);
         taskGraphBuilder.addSource("source", readSource, parallism);
         ComputeConnection computeConnection = taskGraphBuilder.addSink("sink", baseSink, parallism);
-        computeConnection.keyedPartition("source", "edge", DataType.INTEGER, DataType.INTEGER);
+        computeConnection.keyedGather("source", "edge", DataType.INTEGER, DataType.INTEGER, true,
+                Comparator.comparingInt(o -> (Integer) o));
         taskGraphBuilder.setMode(OperationMode.BATCH);
 
         DataFlowTaskGraph dataFlowTaskGraph = taskGraphBuilder.build();

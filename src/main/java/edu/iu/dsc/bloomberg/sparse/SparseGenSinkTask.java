@@ -1,21 +1,18 @@
 package edu.iu.dsc.bloomberg.sparse;
 
-import com.google.common.collect.Iterators;
 import edu.iu.dsc.tws.comms.dfw.io.Tuple;
-import edu.iu.dsc.tws.task.api.BaseSink;
-import edu.iu.dsc.tws.task.api.IMessage;
 import edu.iu.dsc.tws.task.api.ISink;
-import edu.iu.dsc.tws.task.api.typed.batch.BPartitionKeyedCompute;
+import edu.iu.dsc.tws.task.api.typed.KeyedGatherCompute;
 
 import java.util.Iterator;
 import java.util.logging.Logger;
 
-public class SparseGenSinkTask extends BPartitionKeyedCompute<Integer, int[]>
+public class SparseGenSinkTask extends KeyedGatherCompute<Integer, int[]>
         implements ISink {
     private static final Logger LOG = Logger.getLogger(SparseGenSinkTask.class.getName());
 
     @Override
-    public boolean keyedPartition(Iterator<Tuple<Integer, int[]>> content) {
+    public boolean keyedGather(Iterator<Tuple<Integer, int[]>> content) {
         long count = 0;
         while (content.hasNext()) {
             content.next();
