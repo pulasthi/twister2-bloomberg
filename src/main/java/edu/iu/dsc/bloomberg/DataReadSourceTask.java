@@ -15,6 +15,7 @@ public class DataReadSourceTask extends BaseSource {
     private String filePrefirx = "part_";
     private double sum;
     private double count;
+    private double countx;
 
     public DataReadSourceTask(String edge, String inputDir) {
         this.edge = edge;
@@ -49,16 +50,17 @@ public class DataReadSourceTask extends BaseSource {
                     throw new IllegalStateException("File : " + fileId + " not in order at line : " + count);
                 }
                 currentMax = row;
-                if(context.getWorkerId() == 0 && count % 2000000 == 0){
-                    LOG.info(".");
+                if (context.getWorkerId() == 0 && count % 2000000 == 0) {
+                    countx++;
+                    LOG.info(""+ countx);
                 }
             }
             LOG.info("Done readning " + context.getWorkerId());
-            double [] res = {sum, count};
+            double[] res = {sum, count};
             context.write(this.edge, res);
             bf.close();
             context.end(this.edge);
-        }catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
