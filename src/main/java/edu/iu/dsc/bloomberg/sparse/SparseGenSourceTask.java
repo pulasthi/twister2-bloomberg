@@ -41,7 +41,7 @@ public class SparseGenSourceTask extends BaseSource {
             int[] vals = new int[2];
             int row, col, sdist;
             double score, dist;
-            double countx;
+            double countx = 0;
             Integer key;
             while ((line = bf.readLine()) != null) {
                 count++;
