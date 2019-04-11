@@ -30,7 +30,7 @@ public class SparseGenSourceTask extends BaseSource {
 
     @Override
     public void prepare(Config cfg, TaskContext ctx) {
-        int fileIndex = context.taskIndex();
+        int fileIndex = ctx.taskIndex();
         String fileId = (fileIndex < 100) ? "0" : "";
         fileId += (fileIndex < 10) ? "0" + fileIndex : "" + fileIndex;
         String filePath = inputDir + filePrefirx + fileId;
@@ -39,8 +39,8 @@ public class SparseGenSourceTask extends BaseSource {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        LOG.info("Worker " + context.getWorkerId() + " Task " + context.taskIndex());
-        LOG.info("Starting to read file " + context.getWorkerId());
+        LOG.info("Worker " + ctx.getWorkerId() + " Task " + ctx.taskIndex());
+        LOG.info("Starting to read file " + ctx.getWorkerId());
     }
 
     public SparseGenSourceTask(String edge, String inputDir, double min, double max) {
