@@ -30,6 +30,7 @@ public class SparseGenSourceTask extends BaseSource {
 
     @Override
     public void prepare(Config cfg, TaskContext ctx) {
+        super.prepare(cfg, ctx);
         int fileIndex = ctx.taskIndex();
         String fileId = (fileIndex < 100) ? "0" : "";
         fileId += (fileIndex < 10) ? "0" + fileIndex : "" + fileIndex;
