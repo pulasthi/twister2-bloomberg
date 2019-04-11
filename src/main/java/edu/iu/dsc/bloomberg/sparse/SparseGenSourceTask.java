@@ -1,6 +1,8 @@
 package edu.iu.dsc.bloomberg.sparse;
 
+import edu.iu.dsc.tws.common.config.Config;
 import edu.iu.dsc.tws.task.api.BaseSource;
+import edu.iu.dsc.tws.task.api.TaskContext;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -26,12 +28,8 @@ public class SparseGenSourceTask extends BaseSource {
     int[] vals = new int[2];
     BufferedReader bf;
 
-
-    public SparseGenSourceTask(String edge, String inputDir, double min, double max) {
-        this.edge = edge;
-        this.inputDir = inputDir;
-        this.max = max;
-        this.min = min;
+    @Override
+    public void prepare(Config cfg, TaskContext ctx) {
         int fileIndex = context.taskIndex();
         String fileId = (fileIndex < 100) ? "0" : "";
         fileId += (fileIndex < 10) ? "0" + fileIndex : "" + fileIndex;
@@ -43,6 +41,13 @@ public class SparseGenSourceTask extends BaseSource {
         }
         LOG.info("Worker " + context.getWorkerId() + " Task " + context.taskIndex());
         LOG.info("Starting to read file " + context.getWorkerId());
+    }
+
+    public SparseGenSourceTask(String edge, String inputDir, double min, double max) {
+        this.edge = edge;
+        this.inputDir = inputDir;
+        this.max = max;
+        this.min = min;
     }
 
     @Override
