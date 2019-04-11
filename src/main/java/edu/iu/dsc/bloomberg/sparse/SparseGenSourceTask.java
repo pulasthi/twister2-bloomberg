@@ -7,6 +7,7 @@ import edu.iu.dsc.tws.task.api.TaskContext;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Random;
 import java.util.logging.Logger;
 
 public class SparseGenSourceTask extends BaseSource {
@@ -27,6 +28,8 @@ public class SparseGenSourceTask extends BaseSource {
     String splits[];
     int[] vals = new int[2];
     BufferedReader bf;
+    private Random random;
+
 
     @Override
     public void prepare(Config cfg, TaskContext ctx) {
@@ -40,6 +43,8 @@ public class SparseGenSourceTask extends BaseSource {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        this.random = new Random();
+
         LOG.info("Worker " + ctx.getWorkerId() + " Task " + ctx.taskIndex());
         LOG.info("Starting to read file " + ctx.getWorkerId());
     }
@@ -54,28 +59,31 @@ public class SparseGenSourceTask extends BaseSource {
     @Override
     public void execute() {
         try {
-            line = bf.readLine();
+            //line = bf.readLine();
             if (line != null && count < 2000001) {
                 count++;
-                splits = line.split("\\s+");
-                row = Integer.valueOf(splits[0]);
-                col = Integer.valueOf(splits[1]);
-                score = Double.valueOf(splits[2]);
-                dist = (1 / score - 1 / max) * min * max / (max - min);
-                sdist = (int) (dist * Integer.MAX_VALUE);
-                if (context.getWorkerId() == 0 && count % 2000000 == 0) {
-                    countx++;
-                    LOG.info("" + countx);
-                }
-                if (row > col) {
-                    key = col;
-                    vals[0] = row;
-                    vals[1] = sdist;
-                } else {
-                    key = row;
-                    vals[0] = col;
-                    vals[1] = sdist;
-                }
+                //splits = line.split("\\s+");
+//                row = Integer.valueOf(splits[0]);
+//                col = Integer.valueOf(splits[1]);
+//                score = Double.valueOf(splits[2]);
+//                dist = (1 / score - 1 / max) * min * max / (max - min);
+//                sdist = (int) (dist * Integer.MAX_VALUE);
+//                if (context.getWorkerId() == 0 && count % 2000000 == 0) {
+//                    countx++;
+//                    LOG.info("" + countx);
+//                }
+//                if (row > col) {
+//                    key = col;
+//                    vals[0] = row;
+//                    vals[1] = sdist;
+//                } else {
+//                    key = row;
+//                    vals[0] = col;
+//                    vals[1] = sdist;
+//                }
+                key = this.random.nextInt(3000000);
+                vals[0] = this.random.nextInt(3000000);
+                vals[1] = this.random.nextInt(3000000);
                 context.write(this.edge, key, vals);
             } else {
                 bf.close();
