@@ -60,6 +60,12 @@ public class SparseGenSourceTask extends BaseSource {
     public void execute() {
         try {
             int tempc = 0;
+            if(count > 2000000){
+                bf.close();
+                LOG.info("Done readning " + context.getWorkerId());
+                context.end(this.edge);
+                return;
+            }
             while ((line = bf.readLine()) != null && tempc < 1000) {
                 count++;
                 tempc++;
