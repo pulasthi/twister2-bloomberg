@@ -59,36 +59,35 @@ public class SparseGenSourceTask extends BaseSource {
     @Override
     public void execute() {
         try {
-            if (count < 2000001) {
-                int tempc = 0;
-                while ((line = bf.readLine()) != null && tempc < 1000) {
-                    count++;
-                    tempc++;
-                    splits = line.split("\\s+");
-                    row = Integer.valueOf(splits[0]);
-                    col = Integer.valueOf(splits[1]);
-                    score = Double.valueOf(splits[2]);
-                    dist = (1 / score - 1 / max) * min * max / (max - min);
-                    sdist = (int) (dist * Integer.MAX_VALUE);
-                    if (context.getWorkerId() == 0 && count % 2000000 == 0) {
-                        countx++;
-                        LOG.info("" + countx);
-                    }
-                    if (row > col) {
-                        key = col;
-                        vals[0] = row;
-                        vals[1] = sdist;
-                    } else {
-                        key = row;
-                        vals[0] = col;
-                        vals[1] = sdist;
-                    }
+            int tempc = 0;
+            while ((line = bf.readLine()) != null && tempc < 1000) {
+                count++;
+                tempc++;
+                splits = line.split("\\s+");
+                row = Integer.valueOf(splits[0]);
+                col = Integer.valueOf(splits[1]);
+                score = Double.valueOf(splits[2]);
+                dist = (1 / score - 1 / max) * min * max / (max - min);
+                sdist = (int) (dist * Integer.MAX_VALUE);
+                if (context.getWorkerId() == 0 && count % 2000000 == 0) {
+                    countx++;
+                    LOG.info("" + countx);
+                }
+                if (row > col) {
+                    key = col;
+                    vals[0] = row;
+                    vals[1] = sdist;
+                } else {
+                    key = row;
+                    vals[0] = col;
+                    vals[1] = sdist;
+                }
 //                    key = this.random.nextInt(3000000);
 //                    vals[0] = this.random.nextInt(3000000);
 //                    vals[1] = this.random.nextInt(3000000);
-                    context.write(this.edge, key, vals);
-                }
-            } else {
+                context.write(this.edge, key, vals);
+            }
+            if (line == null) {
                 bf.close();
                 LOG.info("Done readning " + context.getWorkerId());
                 context.end(this.edge);
