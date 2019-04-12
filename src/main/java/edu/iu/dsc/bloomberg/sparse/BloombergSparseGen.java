@@ -31,8 +31,7 @@ public class BloombergSparseGen extends TaskWorker {
         taskGraphBuilder.setMode(OperationMode.BATCH);
         taskGraphBuilder.addSource("source", readSource, parallism);
         ComputeConnection computeConnection = taskGraphBuilder.addSink("sink", baseSink, parallism);
-        computeConnection.keyedGather("source", "edge", DataType.INTEGER, DataType.INTEGER, true,
-                Comparator.comparingInt(o -> (Integer) o));
+        computeConnection.keyedPartition("source", "edge", DataType.INTEGER, DataType.INTEGER);
 
         DataFlowTaskGraph dataFlowTaskGraph = taskGraphBuilder.build();
         ExecutionPlan executionPlan = taskExecutor.plan(dataFlowTaskGraph);
