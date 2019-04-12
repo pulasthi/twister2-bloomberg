@@ -8,6 +8,8 @@ import edu.iu.dsc.tws.data.api.DataType;
 import edu.iu.dsc.tws.executor.api.ExecutionPlan;
 import edu.iu.dsc.tws.task.api.BaseSink;
 import edu.iu.dsc.tws.task.api.BaseSource;
+import edu.iu.dsc.tws.task.api.TaskKeySelector;
+import edu.iu.dsc.tws.task.api.TaskPartitioner;
 import edu.iu.dsc.tws.task.graph.DataFlowTaskGraph;
 import edu.iu.dsc.tws.task.graph.OperationMode;
 
@@ -22,6 +24,8 @@ public class BloombergSparseGen extends TaskWorker {
         int parallism = 192;
         String filePath = config.getStringValue("input");
         String outFilePath = config.getStringValue("output");
+        TaskPartitioner taskPartitioner = new BloombergPartitioner();
+        TaskKeySelector taskKeySelector = new BloombergTaskKeySelector();
         double min = 0.61600;
         double max = 14950.00;
         long startTime = System.currentTimeMillis();
@@ -31,8 +35,9 @@ public class BloombergSparseGen extends TaskWorker {
         taskGraphBuilder.setMode(OperationMode.BATCH);
         taskGraphBuilder.addSource("source", readSource, parallism);
         ComputeConnection computeConnection = taskGraphBuilder.addSink("sink", baseSink, parallism);
-        computeConnection.keyedPartition("source", "edge", DataType.INTEGER, DataType.INTEGER);
-
+        //computeConnection.keyedPartition("source", "edge", DataType.INTEGER, DataType.INTEGER);
+        computeConnection.keyedPartition("source", "edge",
+                DataType.INTEGER, DataType.INTEGER, taskPartitioner, taskKeySelector);
         DataFlowTaskGraph dataFlowTaskGraph = taskGraphBuilder.build();
         ExecutionPlan executionPlan = taskExecutor.plan(dataFlowTaskGraph);
         taskExecutor.execute(dataFlowTaskGraph, executionPlan);
