@@ -60,7 +60,7 @@ public class SparseGenSourceTask extends BaseSource {
     public void execute() {
         try {
             int tempc = 0;
-            if(count > 2000000){
+            if (count > 10000) {
                 bf.close();
                 LOG.info("Done readning " + context.getWorkerId());
                 context.end(this.edge);
@@ -82,11 +82,13 @@ public class SparseGenSourceTask extends BaseSource {
                 if (row > col) {
                     key = col;
                     vals[0] = row;
-                    vals[1] = sdist;
+                    //vals[1] = sdist;
+                    vals[1] = (int) score * 10000;
                 } else {
                     key = row;
                     vals[0] = col;
-                    vals[1] = sdist;
+                    //vals[1] = sdist;
+                    vals[1] = (int) score * 10000;
                 }
 //                    key = this.random.nextInt(3000000);
 //                    vals[0] = this.random.nextInt(3000000);
