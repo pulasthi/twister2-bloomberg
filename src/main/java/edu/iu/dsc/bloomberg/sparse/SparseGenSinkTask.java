@@ -4,22 +4,38 @@ import edu.iu.dsc.tws.comms.dfw.io.Tuple;
 import edu.iu.dsc.tws.task.api.ISink;
 import edu.iu.dsc.tws.task.api.typed.batch.BPartitionKeyedCompute;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Iterator;
 import java.util.logging.Logger;
 
 public class SparseGenSinkTask extends BPartitionKeyedCompute<Integer, int[]>
         implements ISink {
     private static final Logger LOG = Logger.getLogger(SparseGenSinkTask.class.getName());
+    String filePath = "/scratch_hdd/bloomberg/";
 
     @Override
     public boolean keyedPartition(Iterator<Tuple<Integer, int[]>> content) {
-        long count = 0;
-        while (content.hasNext()) {
-            content.next();
-            count++;
+        try {
+            PrintWriter outWriter = new PrintWriter(new FileWriter(filePath + "part_" + context.taskId()));
+
+            long count = 0;
+            Tuple<Integer, int[]> tuple;
+            while (content.hasNext()) {
+                tuple = content.next();
+                outWriter.println(tuple.getKey() + " " + tuple.getValue()[0]
+                        + " " + tuple.getValue()[1]);
+                count++;
+            }
+            outWriter.flush();
+            outWriter.close();
+            LOG.info(String.format("%d received keyed-partition count : %d",
+                    context.taskId(), count));
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        LOG.info(String.format("%d received keyed-partition count : %d",
-                context.taskId(), count));
+
         return true;
     }
 }
