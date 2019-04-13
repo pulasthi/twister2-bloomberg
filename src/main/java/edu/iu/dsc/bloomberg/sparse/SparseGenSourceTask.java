@@ -83,13 +83,11 @@ public class SparseGenSourceTask extends BaseSource {
                 if (row > col) {
                     key = col;
                     vals[0] = row;
-                    //vals[1] = sdist;
-                    vals[1] = (int) (score * 10000);
+                    vals[1] = sdist;
                 } else {
                     key = row;
                     vals[0] = col;
-                    //vals[1] = sdist;
-                    vals[1] = (int) (score * 10000);
+                    vals[1] = sdist;
                 }
                 context.write(this.edge, key, vals);
             }
