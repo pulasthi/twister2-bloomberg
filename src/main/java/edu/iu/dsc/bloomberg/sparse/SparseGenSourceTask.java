@@ -91,12 +91,6 @@ public class SparseGenSourceTask extends BaseSource {
                     //vals[1] = sdist;
                     vals[1] = (int) (score * 10000);
                 }
-                key = (int) count;
-                vals[0] = (int) count;
-                vals[1] = (int) (count * 10);
-                if (key == 1) {
-                    LOG.info(key + " " + vals[0] + " " + vals[1]);
-                }
                 context.write(this.edge, key, vals);
             }
             if (line == null) {
