@@ -31,7 +31,7 @@ public class SparseGenSourceTask extends BaseSource {
     private Random random;
     private int roundSize = 2000000 * 15;
     private int offset = 0;
-    private boolean readSrart;
+    private boolean readSrart = true;
 
 
     @Override
