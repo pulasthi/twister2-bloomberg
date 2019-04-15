@@ -29,8 +29,9 @@ public class SparseGenSourceTask extends BaseSource {
     int[] vals;
     BufferedReader bf;
     private Random random;
-    private int roundSize = 2000000 * 10;
+    private int roundSize = 2000000 * 15;
     private int offset = 0;
+    private boolean readSrart;
 
 
     @Override
@@ -64,12 +65,16 @@ public class SparseGenSourceTask extends BaseSource {
     public void execute() {
         try {
             int tempc = 0;
-            if (count < offset){
-                while (count < offset){
+            if (count < offset) {
+                while (count < offset) {
                     bf.readLine();
                 }
             }
             while (count < (offset + roundSize) && (line = bf.readLine()) != null && tempc < 1000) {
+                if (readSrart && context.getWorkerId() == 0) {
+                    LOG.info("Start point : ################### " + count);
+                    readSrart = false;
+                }
                 Integer key;
                 vals = new int[2];
                 count++;
