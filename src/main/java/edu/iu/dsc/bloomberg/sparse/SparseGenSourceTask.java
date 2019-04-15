@@ -29,7 +29,7 @@ public class SparseGenSourceTask extends BaseSource {
     int[] vals;
     BufferedReader bf;
     private Random random;
-    private int roundSize = 2000000 * 20;
+    private int roundSize = 2000000 * 10;
     private int offset = 0;
 
 
@@ -95,7 +95,7 @@ public class SparseGenSourceTask extends BaseSource {
                 }
                 context.write(this.edge, key, vals);
             }
-            if (count > (offset + roundSize)) {
+            if (count >= (offset + roundSize)) {
                 bf.close();
                 LOG.info("Done readning " + context.getWorkerId());
                 context.end(this.edge);
