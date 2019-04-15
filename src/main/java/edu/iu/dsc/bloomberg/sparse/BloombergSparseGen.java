@@ -31,7 +31,7 @@ public class BloombergSparseGen extends TaskWorker {
         double max = 14950.00;
         long startTime = System.currentTimeMillis();
         BaseSource readSource = new SparseGenSourceTask("edge", filePath, min, max, round);
-        SparseGenSinkTask baseSink = new SparseGenSinkTask();
+        SparseGenSinkTask baseSink = new SparseGenSinkTask(round);
         TaskGraphBuilder taskGraphBuilder = TaskGraphBuilder.newBuilder(config);
         taskGraphBuilder.setMode(OperationMode.BATCH);
         taskGraphBuilder.addSource("source", readSource, parallism);

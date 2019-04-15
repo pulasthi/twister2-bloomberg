@@ -13,12 +13,17 @@ import java.util.logging.Logger;
 public class SparseGenSinkTask extends BPartitionKeyedCompute<Integer, int[]>
         implements ISink {
     private static final Logger LOG = Logger.getLogger(SparseGenSinkTask.class.getName());
+    private final int round;
     String filePath = "/scratch_hdd/bloomberg/";
+
+    public SparseGenSinkTask(int round) {
+        this.round = round;
+    }
 
     @Override
     public boolean keyedPartition(Iterator<Tuple<Integer, int[]>> content) {
         try {
-            PrintWriter outWriter = new PrintWriter(new FileWriter(filePath + "part_" + context.taskId()));
+            PrintWriter outWriter = new PrintWriter(new FileWriter(filePath + "part_" + context.taskId() + "__" + round));
 
             long count = 0;
             Tuple<Integer, int[]> tuple;
