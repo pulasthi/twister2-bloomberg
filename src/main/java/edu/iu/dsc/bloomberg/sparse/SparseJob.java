@@ -23,6 +23,8 @@ public class SparseJob {
         Options options = new Options();
         options.addOption("input", true, "Input directory");
         options.addOption("output", true, "Output directory");
+        options.addOption("round", true, "round");
+
         CommandLineParser commandLineParser = new DefaultParser();
         CommandLine cmd;
         try {
@@ -38,6 +40,7 @@ public class SparseJob {
         JobConfig jobConfig = new JobConfig();
         jobConfig.put("input", cmd.getOptionValue("input"));
         jobConfig.put("output", cmd.getOptionValue("output"));
+        jobConfig.put("round", cmd.getOptionValue("round"));
 
 
         Config config = ResourceAllocator.loadConfig(new HashMap<>());

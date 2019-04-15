@@ -12,6 +12,7 @@ import java.util.logging.Logger;
 
 public class SparseGenSourceTask extends BaseSource {
     private static final Logger LOG = Logger.getLogger(SparseGenSourceTask.class.getName());
+    private final int round;
 
     private String edge;
     private String inputDir;
@@ -28,6 +29,8 @@ public class SparseGenSourceTask extends BaseSource {
     int[] vals;
     BufferedReader bf;
     private Random random;
+    private int roundSize = 2000000 * 38;
+    private int offset = 0;
 
 
     @Override
@@ -48,24 +51,25 @@ public class SparseGenSourceTask extends BaseSource {
         LOG.info("Starting to read file " + ctx.getWorkerId());
     }
 
-    public SparseGenSourceTask(String edge, String inputDir, double min, double max) {
+    public SparseGenSourceTask(String edge, String inputDir, double min, double max, int round) {
         this.edge = edge;
         this.inputDir = inputDir;
         this.max = max;
         this.min = min;
+        this.round = round;
+        offset = round * roundSize;
     }
 
     @Override
     public void execute() {
         try {
             int tempc = 0;
-            if (count > 10000) {
-                bf.close();
-                LOG.info("Done readning " + context.getWorkerId());
-                context.end(this.edge);
-                return;
+            if (count < offset){
+                while (count < offset){
+                    bf.readLine();
+                }
             }
-            while ((line = bf.readLine()) != null && tempc < 1000) {
+            while (count < (offset + roundSize) && (line = bf.readLine()) != null && tempc < 1000) {
                 Integer key;
                 vals = new int[2];
                 count++;
@@ -91,7 +95,7 @@ public class SparseGenSourceTask extends BaseSource {
                 }
                 context.write(this.edge, key, vals);
             }
-            if (line == null) {
+            if (count > (offset + roundSize)) {
                 bf.close();
                 LOG.info("Done readning " + context.getWorkerId());
                 context.end(this.edge);

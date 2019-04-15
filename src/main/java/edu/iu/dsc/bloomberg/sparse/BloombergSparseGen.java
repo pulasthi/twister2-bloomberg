@@ -24,12 +24,13 @@ public class BloombergSparseGen extends TaskWorker {
         int parallism = 192;
         String filePath = config.getStringValue("input");
         String outFilePath = config.getStringValue("output");
+        int round = Integer.valueOf(config.getStringValue("round"));
         TaskPartitioner taskPartitioner = new BloombergPartitioner();
         TaskKeySelector taskKeySelector = new BloombergTaskKeySelector();
         double min = 0.61600;
         double max = 14950.00;
         long startTime = System.currentTimeMillis();
-        BaseSource readSource = new SparseGenSourceTask("edge", filePath, min, max);
+        BaseSource readSource = new SparseGenSourceTask("edge", filePath, min, max, round);
         SparseGenSinkTask baseSink = new SparseGenSinkTask();
         TaskGraphBuilder taskGraphBuilder = TaskGraphBuilder.newBuilder(config);
         taskGraphBuilder.setMode(OperationMode.BATCH);
