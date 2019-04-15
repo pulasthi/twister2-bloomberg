@@ -68,6 +68,7 @@ public class SparseGenSourceTask extends BaseSource {
             if (count < offset) {
                 while (count < offset) {
                     bf.readLine();
+                    count++;
                 }
             }
             while (count < (offset + roundSize) && (line = bf.readLine()) != null && tempc < 1000) {
