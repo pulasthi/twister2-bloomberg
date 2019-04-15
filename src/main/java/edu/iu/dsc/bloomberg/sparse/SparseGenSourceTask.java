@@ -29,7 +29,7 @@ public class SparseGenSourceTask extends BaseSource {
     int[] vals;
     BufferedReader bf;
     private Random random;
-    private int roundSize = 2000000 * 38;
+    private int roundSize = 2000000 * 20;
     private int offset = 0;
 
 
