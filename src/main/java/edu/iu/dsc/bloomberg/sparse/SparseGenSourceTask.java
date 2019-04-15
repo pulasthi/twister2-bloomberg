@@ -101,7 +101,7 @@ public class SparseGenSourceTask extends BaseSource {
                 }
                 context.write(this.edge, key, vals);
             }
-            if (count >= (offset + roundSize)) {
+            if (line == null || count >= (offset + roundSize)) {
                 bf.close();
                 LOG.info("Done readning " + context.getWorkerId());
                 context.end(this.edge);
