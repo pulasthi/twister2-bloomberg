@@ -21,7 +21,7 @@ public class SortDataSource extends BaseSource {
     int rounds = 10;
     BufferedReader bf;
     String splits[];
-    long countdoubles = 0;
+    double countdoubles = 0;
     String filePath = "/scratch_hdd/bloomberg/";
 
 
@@ -82,6 +82,7 @@ public class SortDataSource extends BaseSource {
         for (int i = 0; i < sorted.length; i++) {
             sorted[i] = (Integer) keys[i];
         }
+
         Arrays.sort(sorted);
         try {
             PrintWriter outWriter = new PrintWriter(new FileWriter(filePath + "sorted_part_" + context.taskId()));
@@ -101,7 +102,7 @@ public class SortDataSource extends BaseSource {
 
 
         LOG.info("Count doubles " + countdoubles);
-        context.write(this.EDGE, countdoubles);
+        context.write(this.EDGE, new double[]{countdoubles});
         context.end(this.EDGE);
     }
 }
