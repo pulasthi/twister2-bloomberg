@@ -35,7 +35,7 @@ public class SortDataSource extends BaseSource {
     public void prepare(Config cfg, TaskContext ctx) {
         super.prepare(cfg, ctx);
         int fileIndex = ctx.taskIndex();
-        filePrefix = "/scratch_hdd/bloomberg/part_" + filePrefix + "__";
+        filePrefix = "/scratch_hdd/bloomberg/part_" + fileIndex + "__";
         data = new HashMap<>();
     }
 
