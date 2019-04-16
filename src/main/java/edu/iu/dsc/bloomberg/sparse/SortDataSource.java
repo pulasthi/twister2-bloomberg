@@ -91,7 +91,9 @@ public class SortDataSource extends BaseSource {
 
         for (Integer integer : dupCounts.keySet()) {
             for (Map.Entry<Integer, Integer> s : dupCounts.get(integer).entrySet()) {
-                LOG.info("####### " + integer + " " + s.getKey() + s.getValue());
+                if(s.getValue() > 2){
+                    LOG.info("####### " + integer + " " + s.getKey() + " " + s.getValue());
+                }
             }
         }
         //Now sort and print
