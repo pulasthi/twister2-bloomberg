@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class SortJob {
+    public class SortJob {
     private static final Logger LOG = Logger.getLogger(SortJob.class.getName());
 
     public static void main(String[] args) {
@@ -37,7 +37,7 @@ public class SortJob {
 
         Config config = ResourceAllocator.loadConfig(new HashMap<>());
         Twister2Job.Twister2JobBuilder jobBuilder = Twister2Job.newBuilder();
-        jobBuilder.setJobName("Bloombreg-stats");
+        jobBuilder.setJobName("Bloombreg-sort");
         jobBuilder.setWorkerClass(SortData.class.getName());
         jobBuilder.addComputeResource(3, 15096, 4.0, 192);
         jobBuilder.setConfig(jobConfig);

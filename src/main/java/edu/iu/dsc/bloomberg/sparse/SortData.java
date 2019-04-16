@@ -30,7 +30,7 @@ public class SortData extends TaskWorker {
         TaskGraphBuilder taskGraphBuilder = TaskGraphBuilder.newBuilder(config);
         taskGraphBuilder.setMode(OperationMode.BATCH);
         taskGraphBuilder.addSource("source", readSource, parallism);
-        ComputeConnection computeConnection = taskGraphBuilder.addSink("sink", resultSink, parallism);
+        ComputeConnection computeConnection = taskGraphBuilder.addSink("sink", resultSink, 1);
         computeConnection.reduce("source", "edge", Op.SUM, DataType.DOUBLE);
         DataFlowTaskGraph dataFlowTaskGraph = taskGraphBuilder.build();
         ExecutionPlan executionPlan = taskExecutor.plan(dataFlowTaskGraph);
