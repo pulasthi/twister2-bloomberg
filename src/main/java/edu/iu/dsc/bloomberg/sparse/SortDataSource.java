@@ -84,8 +84,9 @@ public class SortDataSource extends BaseSource {
         }
 
         Arrays.sort(sorted);
+        LOG.info("Total number of rows " + sorted.length);
         try {
-            PrintWriter outWriter = new PrintWriter(new FileWriter(filePath + "sorted_part_" + context.taskId()));
+            PrintWriter outWriter = new PrintWriter(new FileWriter(filePath + "sorted_part_" + context.taskIndex()));
 
             for (Integer sortedrow : sorted) {
                 TreeMap<Integer, Integer> temp = data.get(sortedrow);
