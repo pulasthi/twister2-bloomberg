@@ -21,11 +21,11 @@ public class BloombergPartitioner implements TaskPartitioner {
             destination.put(i, sortedDest.get(i));
         }
         int partCount = 0;
-        for (int i = 0; i < 70; i++) {
+        for (int i = 0; i < 68; i++) {
             partArray[i] = partCount++;
 
         }
-        for (int i = 70; i < partArray.length; i = i +2) {
+        for (int i = 68; i < partArray.length; i = i +2) {
             partArray[i] = partCount;
             partArray[i+1] = partCount++;
         }
