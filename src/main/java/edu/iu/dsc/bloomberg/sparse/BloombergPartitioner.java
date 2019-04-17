@@ -6,7 +6,7 @@ import java.util.*;
 
 public class BloombergPartitioner implements TaskPartitioner {
     int total = 31600000;
-    int[] partArray = new int[316];
+    int[] partArray = new int[3160];
     int perTask = total / 192;
     private Map<Integer, Integer> destination = new HashMap<>();
 
@@ -21,14 +21,36 @@ public class BloombergPartitioner implements TaskPartitioner {
             destination.put(i, sortedDest.get(i));
         }
         int partCount = 0;
-        for (int i = 0; i < 68; i++) {
-            partArray[i] = partCount++;
+
+        for (int i = 0; i < 160; i += 5) {
+            partArray[i] = partCount;
+            partArray[i+1] = partCount;
+            partArray[i+2] = partCount;
+            partArray[i+3] = partCount;
+            partArray[i+4] = partCount++;
 
         }
-        for (int i = 68; i < partArray.length; i = i +2) {
-            partArray[i] = partCount;
-            partArray[i+1] = partCount++;
+        for (int i = 160; i < 500; i += 10) {
+            for (int j = 0; j < 9; j++) {
+                partArray[i+j] = partCount;
+            }
+            partArray[i+9] = partCount++;
+
         }
+        for (int i = 500; i < 2740; i += 20) {
+            for (int j = 0; j < 19; j++) {
+                partArray[i+j] = partCount;
+            }
+            partArray[i+19] = partCount++;
+        }
+
+        for (int i = 2740; i < 3160; i += 30) {
+            for (int j = 0; j < 29; j++) {
+                partArray[i+j] = partCount;
+            }
+            partArray[i+29] = partCount++;
+        }
+        System.out.println(Arrays.toString(partArray));
     }
 
     @Override
