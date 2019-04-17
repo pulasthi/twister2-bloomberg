@@ -48,7 +48,7 @@ public class SparseGenSourceTask extends BaseSource {
         }
         this.random = new Random();
 
-        LOG.info("Worker " + ctx.getWorkerId() + " Task " + ctx.taskIndex());
+//        LOG.info("Worker " + ctx.getWorkerId() + " Task " + ctx.taskIndex());
         LOG.info("Starting to read file " + ctx.getWorkerId());
     }
 
@@ -73,7 +73,6 @@ public class SparseGenSourceTask extends BaseSource {
             }
             while (count < (offset + roundSize) && (line = bf.readLine()) != null && tempc < 1000) {
                 if (readSrart && context.getWorkerId() == 0) {
-                    LOG.info("Start point : ################### " + count);
                     readSrart = false;
                 }
                 Integer key;
@@ -99,11 +98,14 @@ public class SparseGenSourceTask extends BaseSource {
                     vals[0] = col;
                     vals[1] = sdist;
                 }
+                if (key == 28966405 && vals[0] == 30085726) {
+                    LOG.info("########################### reading line 28966405 30085726 val" + vals[1]);
+                }
                 context.write(this.edge, key, vals);
             }
             if (line == null || count >= (offset + roundSize)) {
                 bf.close();
-                LOG.info("Done readning " + context.getWorkerId());
+                //LOG.info("Done readning " + context.getWorkerId());
                 context.end(this.edge);
             }
         } catch (IOException e) {
