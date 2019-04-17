@@ -50,13 +50,12 @@ public class BloombergPartitioner implements TaskPartitioner {
             }
             partArray[i+29] = partCount++;
         }
-        System.out.println(Arrays.toString(partArray));
     }
 
     @Override
     public int partition(int source, Object data) {
         int key = (Integer) data;
-        int keypart = (int) Math.floor((double)key/100000);
+        int keypart = (int) Math.floor((double)key/10000);
         if(key > 31600000){
             throw new IllegalStateException("out of range key");
         }
