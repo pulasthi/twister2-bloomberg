@@ -71,7 +71,7 @@ public class SparseGenSourceTask extends BaseSource {
                     count++;
                 }
             }
-            while (count < (offset + roundSize) && (line = bf.readLine()) != null && tempc < 1000) {
+            while (count < (offset + roundSize) &&  tempc < 1000 && (line = bf.readLine()) != null) {
                 if (readSrart && context.getWorkerId() == 185) {
                     LOG.info("Start point : ################### " + count);
                     readSrart = false;
@@ -100,7 +100,7 @@ public class SparseGenSourceTask extends BaseSource {
                     vals[1] = sdist;
                 }
                 if (key == 28966405 && vals[0] == 30085726) {
-                    LOG.info("########################### reading line 28966405 30085726 val" + vals[1]);
+                    LOG.info("########################### reading line 28966405 30085726 at line" + count);
                 }
                 context.write(this.edge, key, vals);
             }
