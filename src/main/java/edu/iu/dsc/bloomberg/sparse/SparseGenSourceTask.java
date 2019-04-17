@@ -99,9 +99,6 @@ public class SparseGenSourceTask extends BaseSource {
                     vals[0] = col;
                     vals[1] = sdist;
                 }
-                if (key == 28966405 && vals[0] == 30085726) {
-                    LOG.info("########################### reading line 28966405 30085726 at line" + count);
-                }
                 context.write(this.edge, key, vals);
             }
             if (line == null || count >= (offset + roundSize)) {

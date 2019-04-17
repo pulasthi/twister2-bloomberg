@@ -6,6 +6,7 @@ import java.util.*;
 
 public class BloombergPartitioner implements TaskPartitioner {
     int total = 31600000;
+    int[] partArray = new int[316];
     int perTask = total / 192;
     private Map<Integer, Integer> destination = new HashMap<>();
 
@@ -19,12 +20,25 @@ public class BloombergPartitioner implements TaskPartitioner {
         for (int i = 0; i < sortedDest.size(); i++) {
             destination.put(i, sortedDest.get(i));
         }
+        int partCount = 0;
+        for (int i = 0; i < 70; i++) {
+            partArray[i] = partCount++;
+
+        }
+        for (int i = 70; i < partArray.length; i = i +2) {
+            partArray[i] = partCount;
+            partArray[i+1] = partCount++;
+        }
     }
 
     @Override
     public int partition(int source, Object data) {
         int key = (Integer) data;
-        int part = (int) Math.floor((double) key / perTask);
+        int keypart = (int) Math.floor((double)key/100000);
+        if(key > 31600000){
+            throw new IllegalStateException("out of range key");
+        }
+        int part = partArray[keypart];
         return destination.get(part);
     }
 
