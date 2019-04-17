@@ -72,7 +72,8 @@ public class SparseGenSourceTask extends BaseSource {
                 }
             }
             while (count < (offset + roundSize) && (line = bf.readLine()) != null && tempc < 1000) {
-                if (readSrart && context.getWorkerId() == 0) {
+                if (readSrart && context.getWorkerId() == 185) {
+                    LOG.info("Start point : ################### " + count);
                     readSrart = false;
                 }
                 Integer key;
