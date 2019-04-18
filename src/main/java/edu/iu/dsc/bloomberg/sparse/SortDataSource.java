@@ -26,7 +26,7 @@ public class SortDataSource extends BaseSource {
 
 
     Map<Integer, TreeMap<Integer, Integer>> data;
-    Map<Integer, Map<Integer, Integer>> dupCounts;
+//    Map<Integer, Map<Integer, Integer>> dupCounts;
 
     public SortDataSource(String edge) {
         this.EDGE = edge;
@@ -38,7 +38,7 @@ public class SortDataSource extends BaseSource {
         int fileIndex = ctx.taskIndex();
         filePrefix = "/scratch_hdd/bloomberg/part_" + fileIndex + "__";
         data = new HashMap<>();
-        dupCounts = new HashMap<>();
+//        dupCounts = new HashMap<>();
     }
 
     @Override
@@ -63,16 +63,16 @@ public class SortDataSource extends BaseSource {
                         if (temp.containsKey(col)) {
                             temp.put(col, temp.get(col) / 2 + val / 2);
                             countdoubles++;
-                            if (dupCounts.containsKey(row)) {
-                                if (dupCounts.get(row).containsKey(col)) {
-                                    dupCounts.get(row).put(col, dupCounts.get(row).get(col) + 1);
-                                } else {
-                                    dupCounts.get(row).put(col, 2);
-                                }
-                            } else {
-                                dupCounts.put(row, new HashMap<>());
-                                dupCounts.get(row).put(col, 2);
-                            }
+//                            if (dupCounts.containsKey(row)) {
+//                                if (dupCounts.get(row).containsKey(col)) {
+//                                    dupCounts.get(row).put(col, dupCounts.get(row).get(col) + 1);
+//                                } else {
+//                                    dupCounts.get(row).put(col, 2);
+//                                }
+//                            } else {
+//                                dupCounts.put(row, new HashMap<>());
+//                                dupCounts.get(row).put(col, 2);
+//                            }
                         } else {
                             temp.put(col, val);
                         }
@@ -89,13 +89,13 @@ public class SortDataSource extends BaseSource {
         }
 
 
-        for (Integer integer : dupCounts.keySet()) {
-            for (Map.Entry<Integer, Integer> s : dupCounts.get(integer).entrySet()) {
-                if(s.getValue() > 2){
-                    LOG.info("####### " + integer + " " + s.getKey() + " " + s.getValue());
-                }
-            }
-        }
+//        for (Integer integer : dupCounts.keySet()) {
+//            for (Map.Entry<Integer, Integer> s : dupCounts.get(integer).entrySet()) {
+//                if(s.getValue() > 2){
+//                    LOG.info("####### " + integer + " " + s.getKey() + " " + s.getValue());
+//                }
+//            }
+//        }
         //Now sort and print
         int[] sorted = new int[data.keySet().size()];
         Object[] keys = data.keySet().toArray();
