@@ -97,6 +97,7 @@ public class SortDataSource extends BaseSource {
 //            }
 //        }
         //Now sort and print
+        LOG.info("Done Loading data");
         int[] sorted = new int[data.keySet().size()];
         Object[] keys = data.keySet().toArray();
         for (int i = 0; i < sorted.length; i++) {
