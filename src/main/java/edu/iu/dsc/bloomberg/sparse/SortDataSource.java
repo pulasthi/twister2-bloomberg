@@ -70,10 +70,17 @@ public class SortDataSource extends BaseSource {
                 val = Integer.valueOf(splits[2]);
                 if (!readFirst) {
                     readFirst = true;
+                    prow = row;
+                    pcol = col;
+                    pval = val;
                     continue;
                 }
                 if (prow == row && pcol == col) {
-                    outWriter.println(row + " " + col + " " + (pval / 2 + val / 2));
+                    if(pval == val){
+                        outWriter.println(row + " " + col + " " + pval);
+                    }else{
+                        outWriter.println(row + " " + col + " " + (pval / 2 + val / 2));
+                    }
                     readFirst = false;
                 } else {
                     outWriter.println(prow + " " + pcol + " " + pval);
@@ -97,3 +104,12 @@ public class SortDataSource extends BaseSource {
         context.end(this.EDGE);
     }
 }
+
+31300286 31301854 1375072047 E
+        31300286 31301854 1375072047 EE >>
+        31300286 31309204 2147483647
+        31300286 31309204 2147483647
+        31300286 31312015 1527514785
+        31300286 31312015 1595694907
+        31300286 31332001 1453652649
+
