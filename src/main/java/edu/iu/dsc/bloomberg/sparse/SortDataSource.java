@@ -56,26 +56,19 @@ public class SortDataSource extends BaseSource {
 
             String file = filePrefix;
             bf = new BufferedReader(new FileReader(file));
-            if (!readFirst) {
-                line = bf.readLine();
-                splits = line.split("\\s+");
-                prow = Integer.valueOf(splits[0]);
-                pcol = Integer.valueOf(splits[1]);
-                pval = Integer.valueOf(splits[2]);
-                readFirst = true;
-            }
 
             while ((line = bf.readLine()) != null) {
                 splits = line.split("\\s+");
                 row = Integer.valueOf(splits[0]);
                 col = Integer.valueOf(splits[1]);
                 val = Integer.valueOf(splits[2]);
-
+                if (!readFirst) {
+                    readFirst = true;
+                    continue;
+                }
                 if (prow == row && pcol == col) {
                     outWriter.println(row + " " + col + " " + (pval / 2 + val / 2));
-                    prow = row;
-                    pcol = col;
-                    pval = val;
+                    readFirst = false;
                 } else {
                     outWriter.println(prow + " " + pcol + " " + pval);
                     prow = row;
