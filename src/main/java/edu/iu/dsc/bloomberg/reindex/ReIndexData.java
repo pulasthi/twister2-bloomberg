@@ -56,7 +56,7 @@ public class ReIndexData extends TaskWorker {
                 int missingCount = 0;
                 for (int i = 1; i < data.length; i++) {
                     if (data[i] > 0) {
-                        outWriter.println(data[i] + " " + newIndex);
+                        outWriter.println(i + " " + newIndex);
                         newIndex++;
                     } else {
                         missingCount++;
