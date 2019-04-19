@@ -34,8 +34,7 @@ public class ReIndexSource extends BaseSource {
     @Override
     public void execute() {
         String line;
-        int[] allvals = new int[31566427 + 1];
-
+        int[] allvals = new int[31566498 + 1];
         int row;
         int col;
         int val;
