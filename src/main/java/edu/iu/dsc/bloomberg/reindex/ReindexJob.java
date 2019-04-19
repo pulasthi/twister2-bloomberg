@@ -37,7 +37,7 @@ public static void main(String[] args) {
 
     Config config = ResourceAllocator.loadConfig(new HashMap<>());
     Twister2Job.Twister2JobBuilder jobBuilder = Twister2Job.newBuilder();
-    jobBuilder.setJobName("Bloombreg-sort");
+    jobBuilder.setJobName("Bloombreg-reIndex");
     jobBuilder.setWorkerClass(ReIndexData.class.getName());
     jobBuilder.addComputeResource(3, 15096, 4.0, 192);
     jobBuilder.setConfig(jobConfig);
