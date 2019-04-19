@@ -56,6 +56,12 @@ public class SortDataSource extends BaseSource {
 
             String file = filePrefix;
             bf = new BufferedReader(new FileReader(file));
+            line = bf.readLine();
+            splits = line.split("\\s+");
+            prow = Integer.valueOf(splits[0]);
+            pcol = Integer.valueOf(splits[1]);
+            pval = Integer.valueOf(splits[2]);
+            readFirst = true;
 
             while ((line = bf.readLine()) != null) {
                 splits = line.split("\\s+");
