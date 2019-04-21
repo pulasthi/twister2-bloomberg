@@ -8,8 +8,7 @@ import java.io.BufferedReader;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
-import java.nio.Buffer;
-import java.nio.ByteOrder;
+import java.nio.*;
 import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +23,7 @@ public class GenMatrixBlocksSource extends BaseSource {
     String indexFile = "";
     BufferedReader bf;
     String splits[];
-    private static ByteOrder endianness = ByteOrder.BIG_ENDIAN;
+    private static ByteOrder endianness = ByteOrder.LITTLE_ENDIAN;
 
 
     public GenMatrixBlocksSource(String edge) {
@@ -48,6 +47,8 @@ public class GenMatrixBlocksSource extends BaseSource {
         int col;
         int newcol;
         int val;
+        int chunkSize = 10000000;
+        int currChuCount = 0;
         try {
 
             bf = new BufferedReader(new FileReader(indexFile));
@@ -70,8 +71,21 @@ public class GenMatrixBlocksSource extends BaseSource {
             Buffer bufferweight = null;
             //Read data file
             bf = new BufferedReader(new FileReader(filePrefix + "_merg_sorted_summed"));
-            List<Short> outData = new ArrayList();
+            List<Integer> outData = new ArrayList();
             List<Integer> outIndex = new ArrayList();
+            int[] outputdata = new int[chunkSize];
+            int[] outputindex = new int[chunkSize*2];
+            ByteBuffer outbyteBufferdata =
+                    ByteBuffer.allocate(outputdata.length * 4);
+            ByteBuffer outbyteBufferindex =
+                    ByteBuffer.allocate(outputindex.length * 4);
+            if (endianness.equals(ByteOrder.BIG_ENDIAN)) {
+                outbyteBufferdata.order(ByteOrder.BIG_ENDIAN);
+                outbyteBufferindex.order(ByteOrder.BIG_ENDIAN);
+            } else {
+                outbyteBufferdata.order(ByteOrder.LITTLE_ENDIAN);
+                outbyteBufferindex.order(ByteOrder.LITTLE_ENDIAN);
+            }
 
             while ((line = bf.readLine()) != null) {
                 splits = line.split("\\s+");
@@ -80,8 +94,71 @@ public class GenMatrixBlocksSource extends BaseSource {
                 val = Integer.valueOf(splits[2]);
                 newrow = allvals[row];
                 newcol = allvals[col];
+
+                outData.add(val);
+                outIndex.add(newrow);
+                outIndex.add(newcol);
+                currChuCount++;
+                if(currChuCount >= chunkSize){
+                    //Flush the values
+
+                    for (int i = 0; i < outputdata.length; i++) {
+                        outputdata[i] = outData.get(i);
+                    }
+
+                    for (int i = 0; i < outputindex.length; i++) {
+                        outputindex[i] = outIndex.get(i);
+                    }
+                    outbyteBufferdata.clear();
+                    outbyteBufferindex.clear();
+
+                    IntBuffer intdataOutputBuffer =
+                            outbyteBufferdata.asIntBuffer();
+                    intdataOutputBuffer.put(outputdata);
+
+                    IntBuffer intOutputBuffer = outbyteBufferindex.asIntBuffer();
+                    intOutputBuffer.put(outputindex);
+
+                    outIndexfile.write(outbyteBufferindex);
+                    outDatafile.write(outbyteBufferdata);
+                    outData = new ArrayList();
+                    outIndex = new ArrayList();
+                    currChuCount = 0;
+                }
             }
 
+            if(line == null && outData.size() > 0){
+                outputdata = new int[outData.size()];
+                for (int i = 0; i < outputdata.length; i++) {
+                    outputdata[i] = outData.get(i);
+                }
+
+                outputindex = new int[outIndex.size()];
+                for (int i = 0; i < outputindex.length; i++) {
+                    outputindex[i] = outIndex.get(i);
+                }
+
+                outbyteBufferdata =
+                        ByteBuffer.allocate(outputdata.length * 4);
+                outbyteBufferindex =
+                        ByteBuffer.allocate(outputindex.length * 4);
+                outbyteBufferdata.clear();
+                outbyteBufferindex.clear();
+
+                IntBuffer intdataOutputBuffer =
+                        outbyteBufferdata.asIntBuffer();
+                intdataOutputBuffer.put(outputdata);
+
+                IntBuffer intOutputBuffer = outbyteBufferindex.asIntBuffer();
+                intOutputBuffer.put(outputindex);
+
+                outIndexfile.write(outbyteBufferindex);
+                outDatafile.write(outbyteBufferdata);
+            }
+
+            outIndexfile.close();
+            outDatafile.close();
+            LOG.info("Done creating bin file");
         } catch (IOException e) {
             e.printStackTrace();
         }
