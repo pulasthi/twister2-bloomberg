@@ -48,25 +48,23 @@ public class GenMatrixBlocks extends TaskWorker {
         private static final Logger LOG = Logger.getLogger(GenMatrixBlocks.SinkTask.class.getName());
 
         public boolean execute(IMessage message) {
-            try {
-                PrintWriter outWriter = new PrintWriter(new FileWriter("/scratch_hdd/bloomberg/index_allocation.txt"));
-                int[] data = (int[]) message.getContent();
-                int newIndex = 0;
-                int missingCount = 0;
-                for (int i = 1; i < data.length; i++) {
-                    if (data[i] > 0) {
-                        outWriter.println(i + " " + newIndex);
-                        newIndex++;
-                    } else {
-                        missingCount++;
-                    }
-                }
-                outWriter.flush();
-                outWriter.close();
-                LOG.info("################ Done ################### Missing : " + missingCount);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+
+//                PrintWriter outWriter = new PrintWriter(new FileWriter("/scratch_hdd/bloomberg/index_allocation.txt"));
+//                int[] data = (int[]) message.getContent();
+//                int newIndex = 0;
+//                int missingCount = 0;
+//                for (int i = 1; i < data.length; i++) {
+//                    if (data[i] > 0) {
+//                        outWriter.println(i + " " + newIndex);
+//                        newIndex++;
+//                    } else {
+//                        missingCount++;
+//                    }
+//                }
+//                outWriter.flush();
+//                outWriter.close();
+            LOG.info("################ Done ################### ");
+
 
             return true;
         }

@@ -142,6 +142,13 @@ public class GenMatrixBlocksSource extends BaseSource {
                         ByteBuffer.allocate(outputdata.length * 4);
                 outbyteBufferindex =
                         ByteBuffer.allocate(outputindex.length * 4);
+                if (endianness.equals(ByteOrder.BIG_ENDIAN)) {
+                    outbyteBufferdata.order(ByteOrder.BIG_ENDIAN);
+                    outbyteBufferindex.order(ByteOrder.BIG_ENDIAN);
+                } else {
+                    outbyteBufferdata.order(ByteOrder.LITTLE_ENDIAN);
+                    outbyteBufferindex.order(ByteOrder.LITTLE_ENDIAN);
+                }
                 outbyteBufferdata.clear();
                 outbyteBufferindex.clear();
 
@@ -164,7 +171,7 @@ public class GenMatrixBlocksSource extends BaseSource {
         }
 
 
-        context.write(this.EDGE, allvals);
+        context.write(this.EDGE, new int[]{12});
         context.end(this.EDGE);
     }
 }
